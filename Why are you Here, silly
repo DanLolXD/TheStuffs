@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Halaman Pribadi</title>
+    <style>
+        body {
+            background-color: #000;
+            color: #00FFFF;
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+        }
+        header {
+            padding: 20px;
+            background-color: #00FFFF;
+            color: #000;
+        }
+        h1 {
+            margin: 0;
+        }
+        .upload-section {
+            margin: 50px 0;
+        }
+        .upload-section input[type="file"] {
+            padding: 10px;
+            border: 2px solid #00FFFF;
+            border-radius: 5px;
+            background-color: #000;
+            color: #00FFFF;
+            cursor: pointer;
+        }
+        .gallery {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        .gallery-item {
+            margin: 10px;
+            border: 2px solid #00FFFF;
+            border-radius: 5px;
+            overflow: hidden;
+            max-width: 300px;
+        }
+        .gallery-item img, .gallery-item video {
+            width: 100%;
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Halaman Pribadi</h1>
+    </header>
+
+    <div class="upload-section">
+        <h2>Unggah Foto/Video</h2>
+        <input type="file" id="fileInput" accept="image/*,video/*" multiple>
+    </div>
+
+    <div class="gallery" id="gallery"></div>
+
+    <script>
+        const fileInput = document.getElementById('fileInput');
+        const gallery = document.getElementById('gallery');
+
+        fileInput.addEventListener('change', (event) => {
+            const files = event.target.files;
+            for (let i = 0; i < files.length; i++) {
+                const file = files[i];
+                const reader = new FileReader();
+
+                reader.onload = function(e) {
+                    const galleryItem = document.createElement('div');
+                    galleryItem.classList.add('gallery-item');
+
+                    if (file.type.startsWith('image/')) {
+                        const img = document.createElement('img');
+                        img.src = e.target.result;
+                        galleryItem.appendChild(img);
+                    } else if (file.type.startsWith('video/')) {
+                        const video = document.createElement('video');
+                        video.src = e.target.result;
+                        video.controls = true;
+                        galleryItem.appendChild(video);
+                    }
+
+                    gallery.appendChild(galleryItem);
+                };
+
+                reader.readAsDataURL(file);
+            }
+        });
+    </script>
+</body>
+</html>
